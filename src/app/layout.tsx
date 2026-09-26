@@ -2,8 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
+import { BookingProvider } from "@/context/BookingContext";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
+import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,14 +44,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className} min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200 antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          {/* গ্লোবাল রেসপন্সিভ র‍্যাপার */}
-          <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
-            <Navbar />
-            <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <BookingProvider>
+            {/* গ্লোবাল রেসপন্সিভ র‍্যাপার */}
+            <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
+              <Navbar />
+              <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                {children}
+              </main>
+              <Footer />
+            </div>
+            <WhatsAppFloat />
+          </BookingProvider>
         </ThemeProvider>
       </body>
     </html>

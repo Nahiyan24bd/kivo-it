@@ -1,87 +1,46 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Link from "next/link";
 import { BrandLogo } from "@/components/ui/BrandLogo";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
-import { Menu, X, ArrowUpRight } from "lucide-react";
-
-const navLinks = [
-  { name: "Services", href: "#services" },
-  { name: "Case Studies", href: "#work" },
-  { name: "Process", href: "#process" },
-  { name: "Team", href: "#team" },
-];
+import { ArrowUpRight } from "lucide-react";
+import { useBooking } from "@/context/BookingContext";
 
 export const Navbar = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { openBooking } = useBooking();
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800/80 bg-white/70 dark:bg-slate-950/70 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-        <BrandLogo />
+    <header className="fixed top-0 left-0 right-0 z-50 w-full transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-3 sm:pt-4">
+        {/* iOS Style Floating Glass Pill Container */}
+        <div className="relative rounded-2xl bg-white/60 dark:bg-slate-950/65 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_32px_rgba(0,0,0,0.5)] px-4 sm:px-6 py-2.5 flex items-center justify-between">
+          <BrandLogo />
 
-        {/* Desktop Links */}
-        <nav className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-sm font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors"
+          <nav className="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-700 dark:text-slate-300">
+            <Link href="/#services" className="hover:text-sky-500 transition-colors">Services</Link>
+            <Link href="/#work" className="hover:text-sky-500 transition-colors">Case Studies</Link>
+            <Link href="/#demos" className="hover:text-sky-500 transition-colors">Demos</Link>
+            <Link href="/#process" className="hover:text-sky-500 transition-colors">Process</Link>
+            <Link href="/#team" className="hover:text-sky-500 transition-colors">Team</Link>
+          </nav>
+
+          <div className="flex items-center gap-3">
+            <div className="p-1 rounded-xl bg-white/40 dark:bg-white/5 border border-white/20 dark:border-white/10 backdrop-blur-md">
+              <ThemeToggle />
+            </div>
+
+            {/* iOS Glass Button */}
+            <button
+              onClick={openBooking}
+              className="relative inline-flex items-center gap-1.5 px-4 sm:px-5 py-2 rounded-xl text-xs font-bold text-white bg-linear-to-r from-sky-500/90 to-blue-600/90 hover:from-sky-400 hover:to-blue-500 shadow-md shadow-sky-500/25 border border-white/30 backdrop-blur-lg active:scale-95 transition-all duration-200"
             >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
-
-        {/* Right CTA & Controls */}
-        <div className="hidden md:flex items-center gap-4">
-          <ThemeToggle />
-          <a
-            href="#contact"
-            className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-950 hover:opacity-90 transition-opacity"
-          >
-            <span>Book a Call</span>
-            <ArrowUpRight size={14} />
-          </a>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <div className="flex items-center gap-2 md:hidden">
-          <ThemeToggle />
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="p-2 rounded-lg text-slate-600 dark:text-slate-400"
-            aria-label="Toggle menu"
-          >
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+              <span>Book a Call</span>
+              <ArrowUpRight size={14} />
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Mobile Drawer */}
-      {isOpen && (
-        <div className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 pt-2 pb-6 space-y-3">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              onClick={() => setIsOpen(false)}
-              className="block text-sm font-medium text-slate-700 dark:text-slate-300 py-1"
-            >
-              {link.name}
-            </Link>
-          ))}
-          <a
-            href="#contact"
-            onClick={() => setIsOpen(false)}
-            className="mt-4 flex items-center justify-center gap-1.5 w-full py-2.5 rounded-xl text-xs font-semibold bg-slate-900 text-white dark:bg-white dark:text-slate-950"
-          >
-            <span>Book a Call</span>
-            <ArrowUpRight size={14} />
-          </a>
-        </div>
-      )}
     </header>
   );
 };
