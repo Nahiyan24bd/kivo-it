@@ -1,13 +1,24 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
 import { BookingProvider } from "@/context/BookingContext";
-import { Navbar } from "@/components/layout/Navbar";
+import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/ui/WhatsAppFloat";
 
-const inter = Inter({ subsets: ["latin"] });
+// আধুনিক প্রিমিয়াম এজেন্সি ফন্ট কনফিগারেশন
+const jakarta = Plus_Jakarta_Sans({ 
+  subsets: ["latin"],
+  variable: "--font-sans",
+  weight: ["400", "500", "600", "700", "800"]
+});
+
+const mono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: ["400", "600"]
+});
 
 export const metadata: Metadata = {
   title: "Kivo IT | Next-Gen Web Engineering & Growth Agency",
@@ -41,18 +52,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.className} min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-200 antialiased`}>
+    <html lang="bn" suppressHydrationWarning className={`${jakarta.variable} ${mono.variable}`}>
+      <body className="font-sans min-h-screen bg-slate-50 dark:bg-[#030712] text-slate-900 dark:text-slate-100 transition-colors duration-200 antialiased selection:bg-sky-500 selection:text-white">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <BookingProvider>
+            {/* সমন্বিত ফিক্সড হেডার (টপ ব্যানার + গ্লাস ন্যাভবার) */}
+            <Header />
+
             {/* গ্লোবাল রেসপন্সিভ র‍্যাপার */}
-            <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden">
-              <Navbar />
+            <div className="relative min-h-screen flex flex-col justify-between overflow-x-hidden pt-36">
               <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 {children}
               </main>
               <Footer />
             </div>
+
+            {/* ফ্লোটিং হোয়াটসঅ্যাপ বাটন */}
             <WhatsAppFloat />
           </BookingProvider>
         </ThemeProvider>
