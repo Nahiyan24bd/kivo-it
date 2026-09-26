@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ArrowUpRight, CheckCircle2, Activity, Zap, TrendingUp, Sparkles } from "lucide-react";
+import { ArrowUpRight, CheckCircle2, TrendingUp, Sparkles } from "lucide-react";
 import { useBooking } from "@/context/BookingContext";
 
 const words = [
@@ -20,20 +20,26 @@ export const Hero = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  useEffect(() => {
+ useEffect(() => {
     const currentWord = words[wordIndex];
-    let typingSpeed = isDeleting ? 45 : 90;
 
+    // ১. পুরো শব্দ লেখা শেষ হলে ২.২ সেকেন্ড পজ দিয়ে ডিলিট শুরু হবে
     if (!isDeleting && text === currentWord) {
-      typingSpeed = 2200; // পুরো শব্দ লেখার পর পজ
-      const timer = setTimeout(() => setIsDeleting(true), typingSpeed);
+      const timer = setTimeout(() => setIsDeleting(true), 2200);
       return () => clearTimeout(timer);
-    } else if (isDeleting && text === "") {
-      setIsDeleting(false);
-      setWordIndex((prev) => (prev + 1) % words.length);
-      typingSpeed = 400; // পরবর্তী শব্দ শুরুর আগে পজ
     }
 
+    // ২. শব্দ সম্পূর্ণ ডিলিট হলে ৪০০ মিলি-সেকেন্ড পজ দিয়ে পরবর্তী শব্দে যাবে
+    if (isDeleting && text === "") {
+      const timer = setTimeout(() => {
+        setIsDeleting(false);
+        setWordIndex((prev) => (prev + 1) % words.length);
+      }, 400);
+      return () => clearTimeout(timer);
+    }
+
+    // ৩. স্বাভাবিক টাইপিং এবং ডিলিটিং স্পিড
+    const typingSpeed = isDeleting ? 45 : 90;
     const timer = setTimeout(() => {
       setText((current) =>
         isDeleting
@@ -65,7 +71,10 @@ export const Hero = () => {
             <span>Next-Gen Engineering & Growth Agency</span>
           </div>
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-slate-900 dark:text-white min-h-[160px] sm:min-h-[170px] lg:min-h-[190px]">
+          <h1 
+  className="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-[1.15] text-slate-900 dark:text-white"
+  style={{ minHeight: "11rem" }}
+>
             Engineering{" "}
             <span className="text-transparent bg-clip-text bg-linear-to-r from-sky-400 via-blue-500 to-indigo-400">
               {text}
