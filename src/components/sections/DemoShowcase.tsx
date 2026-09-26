@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { demos } from "@/data/demos";
-import { ExternalLink, Layers, ArrowUpRight } from "lucide-react";
+import { Layers, ArrowUpRight } from "lucide-react";
 
 const categories = ["All", "Management System", "E-Commerce", "Landing Page"] as const;
 
